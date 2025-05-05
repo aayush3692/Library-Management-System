@@ -168,7 +168,7 @@
   }
 
   .book-overview_btn {
-    @apply mt-4 min-h-14 w-fit bg-primary text-dark-100 hover:bg-primary/90 max-md:w-full !important;
+    @apply  flex justify-center items-center mt-4 min-h-14 w-fit lg:p-4 lg:rounded-xl bg-light-200 mb-4 text-dark-100 hover:bg-primary/90 max-md:w-full;
   }
 
   /* File Upload */
