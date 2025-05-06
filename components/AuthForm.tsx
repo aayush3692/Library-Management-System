@@ -17,6 +17,9 @@ import { Input } from "@/components/ui/input"
 import Link from 'next/link'
 import { FIELD_NAMES, FIELD_TYPES } from '@/constants'
 import ImageUpload from './ImageUpload'
+import FileUpload from './FileUpload'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 interface Props<T extends FieldValues> {
     schema: ZodType<T>;
@@ -32,6 +35,7 @@ const AuthForm =
         defaultValues,
         onSubmit
     }: Props<T>) => {
+        const router = useRouter();
         const isSignIn = type === 'SIGN_IN';
 
         const form: UseFormReturn<T> = useForm({
@@ -41,6 +45,23 @@ const AuthForm =
 
 
         const handleSubmit: SubmitHandler<T> = async (data) => {
+            const result = await onSubmit(data);
+
+            if(result.success) {
+                toast('Success', {
+                    description: isSignIn 
+                    ? 'Sign In successfully' 
+                    : 'Account created Successfully' 
+                });
+
+                router.push('/');
+            } else {
+                toast(`Error ${isSignIn? 'signing in' : 'signing up'}`), {
+                    description: result.error ?? 'An error occurred'
+                }
+            }
+ 
+            
 
         }
         return (
@@ -72,7 +93,14 @@ const AuthForm =
                                         </FormLabel>
                                         <FormControl>
                                             {field.name === 'universityCard'
-                                                ? (<ImageUpload />)
+                                                ? (<FileUpload
+                                                    type="image"
+                                                    accept="image/*"
+                                                    placeholder="Upload your ID"
+                                                    folder="ids"
+                                                    variant="dark"
+                                                    onFileChange={field.onChange}
+                                                />)
                                                 : (<Input
                                                     required
                                                     type={FIELD_TYPES[field.name as keyof typeof FIELD_TYPES]}
@@ -89,7 +117,7 @@ const AuthForm =
                             />
                         ))}
 
-                        <Button type="submit" className='form-btn'>
+                        <Button type="submit" className='form-btn '>
                             {isSignIn? 'Sign In' : 'Sign Up'}
                         </Button>
                     </form>
@@ -99,7 +127,7 @@ const AuthForm =
                     {isSignIn ? 'New to BookWise?' : 'Already have an account?'}
 
                     <Link href={isSignIn ? '/sign-up' : '/sign-in'}
-                        className='font-bold text-white-100 ml-3'>
+                        className='font-bold  text-[#DFD0B8] ml-3'>
                         {isSignIn ? 'Create an account' : 'Sign in'}
                     </Link>
                 </p>

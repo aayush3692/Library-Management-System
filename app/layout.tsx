@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
-
+import { Toaster } from "@/components/ui/sonner"
+import { auth } from "@/auth";
 import localFont from 'next/font/local'
+import { SessionProvider } from "next-auth/react"
+
 const ibmPlexSans = localFont({
   src: [
     { path: "/fonts/IBMPlexSans-Regular.ttf", weight: "400", style: "normal" },
@@ -24,18 +27,26 @@ export const metadata: Metadata = {
     "BookWise is a book borrowing university library management solution.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
   return (
     <html lang="en">
+      <SessionProvider session={session}>
+
+      
       <body
         className={`${ibmPlexSans.className} ${bebasNeue.variable} antialiased`}
         >
         {children}
+
+        <Toaster richColors 
+        theme="dark"/>
       </body>
+      </SessionProvider>
     </html>
   );
 }

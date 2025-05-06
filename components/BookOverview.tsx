@@ -43,11 +43,11 @@ const BookOverview = (
 
                 <div className='book-copies'>
                     <p>
-                        Total Books: <span>{totalCopies}</span>
+                        Total Books: <span className='!text-[#DFD0B8]'>{totalCopies}</span>
                     </p>
 
                     <p>
-                        Available Books: <span>{availableCopies}</span>
+                        Available Books: <span className='!text-[#DFD0B8]'>{availableCopies}</span>
                     </p>
                 </div>
 
@@ -57,7 +57,7 @@ const BookOverview = (
                     <Image 
                     src='/icons/book.svg' 
                     alt='book' width={20} 
-                    height={20} />
+                    height={20} className='mr-2'/>
                     <p className='font-bebas-neue text-xl text-dark-100'>
                         Borrow
                     </p>
